@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>URL Shortener</title>
+</head>
+
+<body>
+
+<h2>URL Shortener</h2>
+
+<input type="text" id="urlInput" placeholder="Paste your long URL here" size="50">
+
+<br><br>
+
+<input type="text" id="customCode" placeholder="Optional custom code (ex: google)">
+
+<br><br>
+
+<button onclick="shortenUrl()">Shorten</button>
+
+<p id="result"></p>
+
+<script>
+
+    async function shortenUrl() {
+
+        const url = document.getElementById("urlInput").value;
+        const customCode = document.getElementById("customCode").value;
+
+        const response = await fetch("http://localhost:8080/shorten", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                url: url,
+                customCode: customCode
+            })
+        });
+
+        const data = await response.json();
+
+        const shortUrl = "http://localhost:8080/" + data.shortCode;
+
+        document.getElementById("result").innerHTML =
+            "Short URL: <a href='" + shortUrl + "' target='_blank'>" + shortUrl + "</a>";
+    }
+
+</script>
+
+</body>
+</html>
