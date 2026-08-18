@@ -1,50 +1,73 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>URL Shortener</title>
+    <style>
+        body{
+        font-family: Arial;
+        text-align:center;
+        margin-top:100px;
+        }
+
+        input{
+        padding:10px;
+        width:300px;
+        margin:10px;
+        }
+
+        button{
+        padding:10px 20px;
+        cursor:pointer;
+        }
+
+        #result{
+        margin-top:20px;
+        font-weight:bold;
+        }
+    </style>
 </head>
 
 <body>
 
 <h2>URL Shortener</h2>
 
-<input type="text" id="urlInput" placeholder="Paste your long URL here" size="50">
+<input id="url" placeholder="url enter"><br>
 
-<br><br>
+<input id="custom" placeholder="anything u can set "><br>
 
-<input type="text" id="customCode" placeholder="Optional custom code (ex: google)">
-
-<br><br>
-
-<button onclick="shortenUrl()">Shorten</button>
+<button onclick="shorten()">Shorten</button>
 
 <p id="result"></p>
 
 <script>
 
-    async function shortenUrl() {
+    async function shorten(){
 
-        const url = document.getElementById("urlInput").value;
-        const customCode = document.getElementById("customCode").value;
+    let url = document.getElementById("url").value;
+    let custom = document.getElementById("custom").value;
 
-        const response = await fetch("http://localhost:8080/shorten", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                url: url,
-                customCode: customCode
-            })
-        });
+    let bodyData = {
+    url: url
+    };
 
-        const data = await response.json();
+    if(custom){
+    bodyData.customCode = custom;
+    }
 
-        const shortUrl = "http://localhost:8080/" + data.shortCode;
+    let response = await fetch("/shorten",{
+    method:"POST",
+    headers:{
+    "Content-Type":"application/json"
+    },
+    body: JSON.stringify(bodyData)
+    });
 
-        document.getElementById("result").innerHTML =
-            "Short URL: <a href='" + shortUrl + "' target='_blank'>" + shortUrl + "</a>";
+    let data = await response.json();
+    let shortUrl = "http://16-112-16-223:8080/" + data.shortCode;
+
+    document.getElementById("result").innerHTML =
+    `Short URL: <a href="${shortUrl}" target="_blank">${shortUrl}</a>`;
+
     }
 
 </script>

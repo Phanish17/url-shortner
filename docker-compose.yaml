@@ -1,0 +1,45 @@
+
+  version: '3.8'
+
+  services:
+
+    mysql:
+      image: mysql:8.0
+      container_name: mysql-container
+      restart: always
+
+      environment:
+        MYSQL_ROOT_PASSWORD: 1234
+        MYSQL_DATABASE: url_shortner
+
+      ports:
+        - "3307:3306"
+
+      volumes:
+        - mysql-data:/var/lib/mysql
+
+      networks:
+        - url-network
+
+
+    springboot:
+      image: urlshortner:v2
+      container_name: urlshortner-container
+      restart: always
+
+      ports:
+        - "8080:8080"
+
+      depends_on:
+        - mysql
+
+      networks:
+        - url-network
+
+
+  volumes:
+    mysql-data:
+
+
+  networks:
+    url-network:
