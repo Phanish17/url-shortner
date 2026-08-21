@@ -63,10 +63,11 @@
     });
 
     let data = await response.json();
-    let shortUrl = "http://16-112-16-223:8080/" + data.shortCode;
 
-    document.getElementById("result").innerHTML =
-    `Short URL: <a href="${shortUrl}" target="_blank">${shortUrl}</a>`;
+        let shortUrl = "http://18.60.81.166:8080/" + data.shortCode;
+
+        document.getElementById("result").innerHTML =
+            `Short URL: <a href="${shortUrl}" target="_blank">${shortUrl}</a>`;
 
     }
 
